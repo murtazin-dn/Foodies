@@ -70,10 +70,14 @@ gradlePlugin {
 //            id = "nowinandroid.android.test"
 //            implementationClass = "AndroidTestConventionPlugin"
 //        }
-//        register("androidHilt") {
-//            id = "nowinandroid.android.hilt"
-//            implementationClass = "AndroidHiltConventionPlugin"
-//        }
+        register("androidDagger") {
+            id = "foodies.android.dagger"
+            implementationClass = "AndroidDaggerConventionPlugin"
+        }
+        register("androidRetrofit") {
+            id = "foodies.android.retrofit"
+            implementationClass = "AndroidRetrofitConventionPlugin"
+        }
 //        register("androidRoom") {
 //            id = "nowinandroid.android.room"
 //            implementationClass = "AndroidRoomConventionPlugin"
