@@ -1,6 +1,8 @@
 package com.example.network.di
 
 import android.app.Application
+import com.example.network.FoodiesNetworkDataSource
+import com.example.network.retrofit.FoodiesRetrofit
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
@@ -32,5 +34,17 @@ internal class NetworkModule {
     @Singleton
     fun provideJsonConverterFactory(): Json{
         return Json
+    }
+
+    @Provides
+    @Singleton
+    fun provideNetworkDataSource(
+        json: Json,
+        okHttpClient: OkHttpClient
+    ): FoodiesNetworkDataSource {
+        return FoodiesRetrofit(
+            json = json,
+            okHttpClient = okHttpClient
+        )
     }
 }

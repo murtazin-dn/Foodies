@@ -17,6 +17,7 @@
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.android.build.gradle.LibraryExtension
 import com.example.convention.configureKotlinAndroid
+import com.example.convention.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -43,6 +44,8 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 //                disableUnnecessaryAndroidTests(target)
 //            }
             dependencies {
+                add("implementation", libs.findLibrary("kotlin-coroutines").get())
+                add("implementation", libs.findLibrary("androidx-junit-ktx").get())
                 add("testImplementation", kotlin("test"))
             }
         }
