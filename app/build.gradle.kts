@@ -1,7 +1,10 @@
+
 plugins {
     alias(libs.plugins.foodies.android.application)
+    alias(libs.plugins.foodies.android.application.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.foodies.android.dagger)
 
 }
 
@@ -28,22 +31,23 @@ android {
             )
         }
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
+//    buildFeatures {
+//        compose = true
+//    }
+//    composeOptions {
+//        kotlinCompilerExtensionVersion = "1.5.1"
+//    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
     implementation(projects.feature.catalog)
-
+    implementation("javax.inject:javax.inject:1")
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)

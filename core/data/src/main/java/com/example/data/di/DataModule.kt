@@ -1,5 +1,7 @@
 package com.example.data.di
 
+import com.example.data.repository.CategoriesRepository
+import com.example.data.repository.DefaultCategoriesRepository
 import com.example.data.repository.DefaultProductsRepository
 import com.example.data.repository.ProductsRepository
 import com.example.network.FoodiesNetworkDataSource
@@ -11,7 +13,7 @@ import javax.inject.Singleton
 internal class DataModule {
 
     @Provides
-    @Singleton
+    @DataScope
     fun provideProductRepository(
         dataSource: FoodiesNetworkDataSource
     ): ProductsRepository{
@@ -20,11 +22,11 @@ internal class DataModule {
         )
     }
     @Provides
-    @Singleton
+    @DataScope
     fun provideCategoriesRepository(
         dataSource: FoodiesNetworkDataSource
-    ): ProductsRepository{
-        return DefaultProductsRepository(
+    ): CategoriesRepository {
+        return DefaultCategoriesRepository(
             dataSource = dataSource
         )
     }

@@ -14,14 +14,14 @@ internal class DefaultProductsRepository @Inject constructor(
     private val dataSource: FoodiesNetworkDataSource
 ): ProductsRepository {
     override suspend fun getProducts(): Flow<List<Product>> = flow{
-        withContext(Dispatchers.IO){
+        val products = withContext(Dispatchers.IO){
             val tagsDiff = async { dataSource.getTags() }
             val productsDiff = async { dataSource.getProducts() }
             val tags = tagsDiff.await()
-            val products = productsDiff.await().map {
+            productsDiff.await().map {
                 it.toProduct(tags)
             }
-            emit(products)
         }
+        emit(products)
     }
 }

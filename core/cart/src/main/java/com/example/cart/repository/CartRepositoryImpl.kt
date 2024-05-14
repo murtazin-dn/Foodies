@@ -10,13 +10,13 @@ internal class CartRepositoryImpl: CartRepository {
     override val cart: Flow<List<CartItem>>
         get() = _cart
 
-    override fun add(id: Int) {
+    override suspend fun add(id: Int) {
         val newList = _cart.value.toMutableList()
         newList.find { it.id == id }?.let { cartItem ->
             val nevItem = cartItem.copy(count = cartItem.count + 1)
             newList.remove(cartItem)
             newList.add(nevItem)
-        } ?: {
+        } ?: run {
             newList.add(
                 CartItem(
                     id = id,
@@ -25,9 +25,10 @@ internal class CartRepositoryImpl: CartRepository {
             )
         }
         _cart.value = newList
+        println(newList)
     }
 
-    override fun remove(id: Int) {
+    override suspend fun remove(id: Int) {
         val newList = _cart.value.toMutableList()
         newList.find { it.id == id }?.let { cartItem ->
             if (cartItem.count <= 1) newList.remove(cartItem)
@@ -36,5 +37,6 @@ internal class CartRepositoryImpl: CartRepository {
             newList.add(nevItem)
         }
         _cart.value = newList
+        println(newList)
     }
 }

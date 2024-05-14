@@ -14,6 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
+
 rootProject.name = "Foodies"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
@@ -26,3 +27,4 @@ include(":core:data")
 include(":core:model")
 include(":core:domain")
 include(":core:cart")
+include(":core:common")

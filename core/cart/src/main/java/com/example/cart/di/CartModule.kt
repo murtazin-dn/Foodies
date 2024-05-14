@@ -7,9 +7,9 @@ import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class CartModule {
+internal class CartModule {
 
     @Provides
-    @Singleton
+    @CartScope
     fun provideCartRepository(): CartRepository = CartRepositoryImpl()
 }

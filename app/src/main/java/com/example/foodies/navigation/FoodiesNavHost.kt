@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.catalog.navigation.CATALOG_ROUTE
-import com.example.catalog.navigation.CatalogScreen
+import com.example.catalog.navigation.catalogScreen
 
 @Composable
 fun FoodiesNavHost(){
@@ -13,6 +13,6 @@ fun FoodiesNavHost(){
         navController = navController,
         startDestination = CATALOG_ROUTE
     ){
-        CatalogScreen()
+        catalogScreen()
     }
 }

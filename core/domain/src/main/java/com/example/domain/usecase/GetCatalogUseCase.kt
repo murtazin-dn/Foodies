@@ -19,7 +19,7 @@ class GetCatalogUseCase @Inject constructor(
     private val categoriesRepository: CategoriesRepository,
     private val cartRepository: CartRepository
 ) {
-    suspend fun execute(): Flow<List<CategoryModel>> = flow {
+    fun execute(): Flow<List<CategoryModel>> = flow {
         val categories = categoriesRepository.getCategories()
         val products = productsRepository.getProducts()
         val cart = cartRepository.cart

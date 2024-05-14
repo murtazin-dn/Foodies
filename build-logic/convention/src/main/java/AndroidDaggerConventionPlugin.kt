@@ -12,6 +12,7 @@ class AndroidDaggerConventionPlugin : Plugin<Project> {
 
             dependencies {
                 "implementation"(libs.findLibrary("dagger").get())
+                "implementation"(libs.findLibrary("javax.inject").get())
                 "ksp"(libs.findLibrary("dagger.compiler").get())
             }
 

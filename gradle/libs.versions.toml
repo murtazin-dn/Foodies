@@ -23,6 +23,7 @@ kotlinxSerializationJson = "1.6.3"
 junitKtx = "1.1.5"
 okhttp = "4.12.0"
 coroutines = "1.8.1-Beta"
+javaxInject = "1"
 
 
 
@@ -59,6 +60,7 @@ retrofit-kotlinx-serialization = { module = "com.jakewharton.retrofit:retrofit2-
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
 
 
 
@@ -74,6 +76,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 
 # Plugins defined by this project
 foodies-android-application = { id = "foodies.android.application", version = "unspecified" }
+foodies-android-application-compose = { id = "foodies.android.application.compose", version = "unspecified" }
 foodies-android-library = { id = "foodies.android.library", version = "unspecified" }
 foodies-android-library-compose = { id = "foodies.android.library.compose", version = "unspecified" }
 foodies-android-feature = { id = "foodies.android.feature", version = "unspecified" }
