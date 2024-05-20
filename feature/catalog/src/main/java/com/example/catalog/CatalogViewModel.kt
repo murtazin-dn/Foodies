@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
+import com.example.model.CatalogModel
 import com.example.model.CategoryModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ internal class CatalogViewModel @Inject constructor(
 ) : ViewModel() {
 
     val state: StateFlow<CatalogUIState> = getCatalogUseCase.execute()
-        .flatMapLatest<List<CategoryModel>, CatalogUIState> { catalog ->
+        .flatMapLatest<CatalogModel, CatalogUIState> { catalog ->
             flowOf(CatalogUIState.Success(catalog))
         }
         .onStart { emit(CatalogUIState.Loading) }

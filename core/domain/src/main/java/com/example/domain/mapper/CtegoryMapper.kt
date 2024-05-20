@@ -5,14 +5,9 @@ import com.example.data.model.Category
 import com.example.data.model.Product
 import com.example.model.CategoryModel
 
-internal fun Category.toCategoryModel(products: List<Product>, cart: List<CartItem>): CategoryModel {
+internal fun Category.toCategoryModel(): CategoryModel {
     return CategoryModel(
-        name = this.name,
-        products = products.filter {
-            it.categoryId == this.id
-        }.map { product ->
-            val countInCart = cart.find { it.id == product.id }?.count ?: 0
-            product.toProductModel(countInCart)
-        }
+        id = this.id,
+        name = this.name
     )
 }

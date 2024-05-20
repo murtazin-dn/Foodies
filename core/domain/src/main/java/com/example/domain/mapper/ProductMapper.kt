@@ -17,5 +17,6 @@ internal fun Product.toProductModel(countInCart: Int) = ProductModel(
     fatsPer100Grams = this.fatsPer100Grams,
     carbohydratesPer100Grams = this.carbohydratesPer100Grams,
     tags = this.tags.map { it.toTagModel() },
+    categoryId = this.categoryId,
     countInCart = countInCart
 )

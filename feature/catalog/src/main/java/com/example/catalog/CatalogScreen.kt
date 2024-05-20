@@ -2,28 +2,54 @@ package com.example.catalog
 
 import android.widget.Button
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.dp
+import com.example.designsystem.component.topbar.CatalogTopBar
+import com.example.designsystem.parameterprovider.CatalogPreviewParameterProvider
+import com.example.designsystem.theme.FoodiesTheme
+import com.example.model.CatalogModel
+import com.example.model.CategoryModel
+import com.example.model.ProductModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.launch
 
 @Composable
 internal fun CatalogRoute(
     viewModel: CatalogViewModel
-){
+) {
     val state by viewModel.state.collectAsState()
     CatalogScreen(
         state,
-        {viewModel.addToCart(it)},
-        {viewModel.removeFromCart(it)}
+        { viewModel.addToCart(it) },
+        { viewModel.removeFromCart(it) }
     )
 }
 
@@ -33,7 +59,7 @@ internal fun CatalogScreen(
     onAddToCartClick: (Int) -> Unit,
     onRemoveFromCartClick: (Int) -> Unit
 ) {
-    when (state){
+    when (state) {
         is CatalogUIState.Error -> CatalogError()
         CatalogUIState.Loading -> CatalogLoading()
         is CatalogUIState.Success -> CatalogLoadedData(
@@ -45,42 +71,128 @@ internal fun CatalogScreen(
 }
 
 @Composable
-internal fun CatalogLoading(){
-    CircularProgressIndicator()
+internal fun CatalogLoading() {
+    FoodiesTheme {
+        CircularProgressIndicator()
+    }
 }
+
 @Composable
-internal fun CatalogError(){
+internal fun CatalogError() {
+    FoodiesTheme {
+
+    }
 }
+
 @Composable
 internal fun CatalogLoadedData(
     state: CatalogUIState.Success,
     onAddToCartClick: (Int) -> Unit,
     onRemoveFromCartClick: (Int) -> Unit
-){
-    LazyColumn {
-        itemsIndexed(state.data){ _, item ->
-            Column {
-                item.products.forEach { product ->
-                    Column {
-                        Text(
-                            text = product.name
-                        )
-                    }
-                    Row {
-                        Text(
-                            modifier = Modifier.clickable { onRemoveFromCartClick.invoke(product.id) },
-                            text = "remove"
-                        )
-                        Text(
-                            text = product.countInCart.toString()
-                        )
-                        Text(
-                            modifier = Modifier.clickable { onAddToCartClick.invoke(product.id) },
-                            text = "add"
-                        )
-                    }
+) {
+    val catalog = state.data
+
+    val coroutineScope = rememberCoroutineScope()
+
+    val selectedTabIndex = remember { mutableStateOf(0) }
+    val listState = rememberLazyListState()
+
+    val scrollToItem = scroller(
+        listState = listState,
+        coroutineScope = coroutineScope,
+        items = catalog.products
+    )
+
+    LaunchedEffect(listState) {
+        snapshotFlow { listState.firstVisibleItemIndex }
+            .mapNotNull { productIndex ->
+                catalog.categories.indexOfFirst { category ->
+                    category.id == catalog.products[productIndex].categoryId
+                }
+            }
+            .distinctUntilChanged()
+            .collectLatest {
+                selectedTabIndex.value = it
+            }
+    }
+
+    Column {
+
+        CatalogTopBar(
+            categories = catalog.categories,
+            scrollToItem = scrollToItem,
+            selectedTabIndex = selectedTabIndex,
+            onFilterClick = {}
+        )
+
+        ListItems(
+            state = listState,
+            catalogItems = catalog.products,
+            onAddToCartClick = onAddToCartClick,
+            onRemoveFromCartClick = onRemoveFromCartClick
+        )
+    }
+}
+
+private fun scroller(
+    listState: LazyListState,
+    coroutineScope: CoroutineScope,
+    items: List<ProductModel>
+): (Int) -> Unit = { categoryId ->
+    coroutineScope.launch {
+        val productIndex = items.indexOfFirst { it.categoryId == categoryId }
+        listState.animateScrollToItem(index = productIndex)
+    }
+}
+
+@Composable
+internal fun ListItems(
+    state: LazyListState,
+    catalogItems: List<ProductModel>,
+    onAddToCartClick: (Int) -> Unit,
+    onRemoveFromCartClick: (Int) -> Unit
+) {
+    LazyColumn(state = state) {
+        items(catalogItems) { item ->
+            Card(
+                modifier = Modifier.padding(vertical = 5.dp)
+            ) {
+                Text(text = item.name)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        modifier = Modifier.clickable {
+                            onRemoveFromCartClick.invoke(item.id)
+                        },
+                        text = "remove"
+                    )
+                    Text(text = item.countInCart.toString())
+                    Text(
+                        modifier = Modifier.clickable {
+                            onAddToCartClick.invoke(item.id)
+                        },
+                        text = "add"
+                    )
                 }
             }
         }
     }
+}
+
+
+@Preview
+@Composable
+private fun CatalogLoadedDataPreview(
+    @PreviewParameter(CatalogPreviewParameterProvider::class)
+    catalog: CatalogModel
+) {
+    CatalogLoadedData(
+        state = CatalogUIState.Success(
+            data = catalog
+        ),
+        onRemoveFromCartClick = {},
+        onAddToCartClick = {}
+
+    )
 }

@@ -14,5 +14,6 @@ data class ProductModel(
     val fatsPer100Grams: Double,
     val carbohydratesPer100Grams: Double,
     val tags: List<TagModel> = listOf(),
+    val categoryId: Int,
     val countInCart: Int
 )
