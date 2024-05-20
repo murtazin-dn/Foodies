@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.designsystem.R
 import com.example.designsystem.parameterprovider.CatalogPreviewParameterProvider
+import com.example.designsystem.theme.FoodiesTheme
 import com.example.model.CatalogModel
 import com.example.model.CategoryModel
 
@@ -153,10 +154,12 @@ fun CatalogTopBarPreview(
     @PreviewParameter(CatalogPreviewParameterProvider::class)
     catalog: CatalogModel
 ) {
-    CatalogTopBar(
-        categories = catalog.categories,
-        scrollToItem = {},
-        selectedTabIndex = mutableStateOf(0),
-        onFilterClick = {}
-    )
+    FoodiesTheme {
+        CatalogTopBar(
+            categories = catalog.categories,
+            scrollToItem = {},
+            selectedTabIndex = mutableStateOf(0),
+            onFilterClick = {}
+        )
+    }
 }

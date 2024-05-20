@@ -1,6 +1,5 @@
 package com.example.catalog
 
-import android.widget.Button
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,14 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ScrollableTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,7 +33,6 @@ import com.example.designsystem.component.topbar.CatalogTopBar
 import com.example.designsystem.parameterprovider.CatalogPreviewParameterProvider
 import com.example.designsystem.theme.FoodiesTheme
 import com.example.model.CatalogModel
-import com.example.model.CategoryModel
 import com.example.model.ProductModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -46,11 +45,13 @@ internal fun CatalogRoute(
     viewModel: CatalogViewModel
 ) {
     val state by viewModel.state.collectAsState()
-    CatalogScreen(
-        state,
-        { viewModel.addToCart(it) },
-        { viewModel.removeFromCart(it) }
-    )
+    FoodiesTheme{
+        CatalogScreen(
+            state,
+            { viewModel.addToCart(it) },
+            { viewModel.removeFromCart(it) }
+        )
+    }
 }
 
 @Composable
@@ -72,16 +73,11 @@ internal fun CatalogScreen(
 
 @Composable
 internal fun CatalogLoading() {
-    FoodiesTheme {
         CircularProgressIndicator()
-    }
 }
 
 @Composable
 internal fun CatalogError() {
-    FoodiesTheme {
-
-    }
 }
 
 @Composable
@@ -95,7 +91,7 @@ internal fun CatalogLoadedData(
     val coroutineScope = rememberCoroutineScope()
 
     val selectedTabIndex = remember { mutableStateOf(0) }
-    val listState = rememberLazyListState()
+    val listState = rememberLazyGridState()
 
     val scrollToItem = scroller(
         listState = listState,
@@ -135,7 +131,7 @@ internal fun CatalogLoadedData(
 }
 
 private fun scroller(
-    listState: LazyListState,
+    listState: LazyGridState,
     coroutineScope: CoroutineScope,
     items: List<ProductModel>
 ): (Int) -> Unit = { categoryId ->
@@ -147,12 +143,15 @@ private fun scroller(
 
 @Composable
 internal fun ListItems(
-    state: LazyListState,
+    state: LazyGridState,
     catalogItems: List<ProductModel>,
     onAddToCartClick: (Int) -> Unit,
     onRemoveFromCartClick: (Int) -> Unit
 ) {
-    LazyColumn(state = state) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        state = state
+    ) {
         items(catalogItems) { item ->
             Card(
                 modifier = Modifier.padding(vertical = 5.dp)
