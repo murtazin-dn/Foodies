@@ -46,20 +46,9 @@ internal fun Project.configureAndroidCompose(
             add("implementation", libs.findLibrary("androidx-ui-tooling-preview").get())
             add("debugImplementation", libs.findLibrary("androidx-ui-tooling").get())
             add("implementation", libs.findLibrary("androidx-material3").get())
+            add("implementation", libs.findLibrary("coil-compose").get())
 
 
-//            implementation(libs.androidx.junit.ktx)
-
-//            add("implementation", libs.findLibrary("junit").get())
-//            add("testImplementation", libs.findLibrary("junit").get())
-//            add("androidTestImplementation", libs.findLibrary("androidx-ui-test-junit4").get())
-//            testImplementation(libs.junit)
-//            androidTestImplementation(libs.androidx.junit)
-//            androidTestImplementation(libs.androidx.espresso.core)
-//            androidTestImplementation(platform(libs.androidx.compose.bom))
-//            androidTestImplementation(libs.androidx.ui.test.junit4)
-//            debugImplementation(libs.androidx.ui.tooling)
-//            debugImplementation(libs.androidx.ui.test.manifest)
         }
     }
 }

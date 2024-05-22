@@ -29,7 +29,7 @@ internal val Typography = Typography(
         fontFamily = Roboto,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
-        lineHeight = 26.sp,
+        lineHeight = 16.sp,
     )
 
 )
