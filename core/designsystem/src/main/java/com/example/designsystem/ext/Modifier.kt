@@ -102,3 +102,49 @@ fun Modifier.customShadowBottom(
         }
     }
 )
+fun Modifier.customShadowTop(
+    color: Color = Color.Black,
+    borderRadius: Dp = 0.dp,
+    blurRadius: Dp = 0.dp,
+    offsetY: Dp = 0.dp,
+    spread: Dp = 0.dp,
+    alpha: Float = 1.0f,
+    modifier: Modifier = Modifier
+): Modifier = this.then(
+    modifier.drawBehind {
+        this.drawIntoCanvas {
+
+            val paint = Paint()
+            val frameworkPaint = paint.asFrameworkPaint()
+            val spreadPixel = spread.toPx()
+
+            val leftPixel = 0f - spreadPixel
+            val topPixel = 0f - spreadPixel
+            val rightPixel = (this.size.width + spreadPixel)
+            val bottomPixel = 0f
+
+            if (blurRadius != 0.dp) {
+                frameworkPaint.maskFilter =
+                    (BlurMaskFilter(blurRadius.toPx(), BlurMaskFilter.Blur.NORMAL))
+            }
+
+            frameworkPaint.color = color.toArgb()
+            it.clipRect(
+                left = 0f,
+                top = 0f,
+                right = size.width,
+                bottom = 0f + bottomPixel + blurRadius.toPx(),
+                clipOp = ClipOp.Difference
+            )
+            it.drawRoundRect(
+                left = leftPixel,
+                top = topPixel,
+                right = rightPixel,
+                bottom = bottomPixel,
+                radiusX = borderRadius.toPx(),
+                radiusY = borderRadius.toPx(),
+                paint
+            )
+        }
+    }
+)

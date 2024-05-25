@@ -41,9 +41,11 @@ class GetCatalogUseCase @Inject constructor(
                 _categories.map { it.toCategoryModel() },
                 newProducts
             )
+            val sum = newProducts.sumOf { it.priceCurrent * it.countInCart }
             CatalogModel(
                 categories = newCategories,
-                products = newProducts
+                products = newProducts,
+                sum = sum
             )
         }.collect { catalog ->
             emit(catalog)

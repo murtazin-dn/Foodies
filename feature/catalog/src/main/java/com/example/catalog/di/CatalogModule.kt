@@ -10,7 +10,6 @@ import dagger.Provides
 @Module
 internal class CatalogModule {
 
-
         @Provides
         @CatalogScope
         fun provideViewModel(

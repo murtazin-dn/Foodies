@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="price">%1$s ₽</string>
+    <string name="back">Back</string>
+    <string name="image_of">Image of %1$s</string>
+    <string name="title_weight">Вес</string>
+    <string name="title_energy_value">Энерг. ценность</string>
+    <string name="title_protein">Белки</string>
+    <string name="title_fats">Жиры</string>
+    <string name="title_carbonhydraties">Углеводы</string>
+    <string name="energy_value">%1$s ккал</string>
+    <string name="protein">%1$s г</string>
+    <string name="fats">%1$s г</string>
+    <string name="carbonhydarates">%1$s г</string>
+    <string name="add_to_cart">В корзину за %1$s</string>
+</resources>

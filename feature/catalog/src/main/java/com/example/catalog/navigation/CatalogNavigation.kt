@@ -13,10 +13,13 @@ import com.example.common.viewmodel.daggerViewModel
 
 const val CATALOG_ROUTE = "catalog_route"
 
-fun NavController.navigateToCatalog(navOptions: NavOptions) = navigate(CATALOG_ROUTE, navOptions)
+fun NavController.navigateToCatalog(navOptions: NavOptions? = null) = navigate(CATALOG_ROUTE, navOptions)
 
-fun NavGraphBuilder.catalogScreen() {
+fun NavGraphBuilder.catalogScreen(
+    navigateToProductDetail: (Int) -> Unit
+) {
     composable(route = CATALOG_ROUTE) {
+
         val component = DaggerCatalogComponent
             .builder()
             .catalogFeatureDependencies(CatalogFeatureDependenciesProvider.deps)
@@ -25,6 +28,9 @@ fun NavGraphBuilder.catalogScreen() {
         val viewModel: CatalogViewModel = daggerViewModel {
             component.getViewModel()
         }
-        CatalogRoute(viewModel)
+        CatalogRoute(
+            viewModel,
+            navigateToProductDetail
+        )
     }
 }

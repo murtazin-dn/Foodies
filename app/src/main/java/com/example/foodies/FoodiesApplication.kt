@@ -12,6 +12,7 @@ import com.example.foodies.di.AppComponent
 import com.example.foodies.di.DaggerAppComponent
 import com.example.network.di.DaggerNetworkComponent
 import com.example.network.di.NetworkComponent
+import com.example.productdetail.di.ProductDetailFeatureDependenciesStore
 
 class FoodiesApplication: Application() {
 
@@ -38,6 +39,7 @@ class FoodiesApplication: Application() {
         super.onCreate()
         val appComponent = DaggerAppComponent.builder().domainComponent(domainComponent).build()
         CatalogFeatureDependenciesStore.deps = appComponent
+        ProductDetailFeatureDependenciesStore.deps = appComponent
     }
 
 

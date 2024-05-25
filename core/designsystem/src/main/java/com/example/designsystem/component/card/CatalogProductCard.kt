@@ -4,24 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -30,8 +25,8 @@ import coil.compose.AsyncImage
 import com.example.designsystem.R
 import com.example.designsystem.component.button.CardPriceButton
 import com.example.designsystem.component.button.CounterButton
-import com.example.designsystem.parameterprovider.CatalogProductInCardPreviewParameterProvider
-import com.example.designsystem.parameterprovider.CatalogProductNotInCardPreviewParameterProvider
+import com.example.designsystem.parameterprovider.ProductInCardPreviewParameterProvider
+import com.example.designsystem.parameterprovider.ProductNotInCardPreviewParameterProvider
 import com.example.designsystem.theme.FoodiesTheme
 import com.example.model.ProductModel
 
@@ -73,8 +68,7 @@ fun CatalogProductCard(
                     .aspectRatio(1f)
                     .background(Color.Transparent),
                 model = R.drawable.photo,
-                //TODO: Replace with string resource
-                contentDescription = "Image of ${product.name}",
+                contentDescription = stringResource(R.string.image_of, product.name),
                 placeholder = painterResource(id = R.drawable.photo),
             )
             Column(modifier = Modifier.padding(12.dp)) {
@@ -122,7 +116,7 @@ fun CatalogProductCard(
 @Preview
 @Composable
 fun CatalogProductInCartPreview(
-    @PreviewParameter(CatalogProductInCardPreviewParameterProvider::class)
+    @PreviewParameter(ProductInCardPreviewParameterProvider::class)
     product: ProductModel
 ) {
     FoodiesTheme {
@@ -141,7 +135,7 @@ fun CatalogProductInCartPreview(
 @Preview
 @Composable
 fun CatalogProductNotInCartPreview(
-    @PreviewParameter(CatalogProductNotInCardPreviewParameterProvider::class)
+    @PreviewParameter(ProductNotInCardPreviewParameterProvider::class)
     product: ProductModel
 ) {
     FoodiesTheme {

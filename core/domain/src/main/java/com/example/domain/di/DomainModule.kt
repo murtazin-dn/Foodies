@@ -5,6 +5,7 @@ import com.example.data.repository.CategoriesRepository
 import com.example.data.repository.ProductsRepository
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
+import com.example.domain.usecase.GetProductUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import dagger.Module
 import dagger.Provides
@@ -20,6 +21,15 @@ internal class DomainModule {
     ) = GetCatalogUseCase(
         productsRepository,
         categoriesRepository,
+        cartRepository
+    )
+    @DomainScope
+    @Provides
+    fun provideGetProductUseCase(
+        productsRepository: ProductsRepository,
+        cartRepository: CartRepository
+    ) = GetProductUseCase(
+        productsRepository,
         cartRepository
     )
     @DomainScope

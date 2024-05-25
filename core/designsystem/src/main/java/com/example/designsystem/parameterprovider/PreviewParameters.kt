@@ -200,6 +200,7 @@ object PreviewParameters{
 
     val catalog = CatalogModel(
         categories = categories,
-        products = products
+        products = products,
+        sum = 3453L
     )
 }

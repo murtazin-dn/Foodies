@@ -8,4 +8,5 @@ interface CatalogFeatureDependencies {
     val getCatalogUseCase: GetCatalogUseCase
     val addToCartUseCase: AddToCartUseCase
     val removeFromCartUseCase: RemoveFromCartUseCase
+
 }

@@ -15,10 +15,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.example.designsystem.R
 import com.example.designsystem.ext.customShadow
 import com.example.designsystem.theme.FoodiesTheme
 
@@ -44,8 +46,7 @@ internal fun CardPriceButton(
     ) {
         Text(
             style = MaterialTheme.typography.labelLarge.copy(Color.Black),
-            //TODO use string resource
-            text = "$price ₽",
+            text = stringResource(R.string.price, price),
         )
         oldPrice?.let {
             Text(
@@ -54,8 +55,7 @@ internal fun CardPriceButton(
                     color = Color.Gray,
                     textDecoration = TextDecoration.LineThrough
                 ),
-                //TODO use string resource
-                text = "$it ₽",
+                text = stringResource(R.string.price, it),
             )
         }
 

@@ -34,6 +34,7 @@
             <option value="$PROJECT_DIR$/core/network" />
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature/catalog" />
+            <option value="$PROJECT_DIR$/feature/productDetail" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
