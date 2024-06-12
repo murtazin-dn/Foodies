@@ -2,6 +2,7 @@ package com.example.foodies
 
 import android.app.Application
 import com.example.cart.di.CartComponent
+import com.example.cart.di.CartFeatureDependenciesStore
 import com.example.cart.di.DaggerCartComponent
 import com.example.catalog.di.CatalogFeatureDependenciesStore
 import com.example.data.di.DaggerDataComponent
@@ -40,6 +41,7 @@ class FoodiesApplication: Application() {
         val appComponent = DaggerAppComponent.builder().domainComponent(domainComponent).build()
         CatalogFeatureDependenciesStore.deps = appComponent
         ProductDetailFeatureDependenciesStore.deps = appComponent
+        CartFeatureDependenciesStore.deps = appComponent
     }
 
 

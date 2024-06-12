@@ -1,6 +1,7 @@
 package com.example.domain.usecase
 
 import com.example.cart.repository.CartRepository
+import com.example.common.Result
 import com.example.data.repository.CategoriesRepository
 import com.example.data.repository.ProductsRepository
 import com.example.domain.mapper.toCategoryModel
@@ -17,7 +18,7 @@ class GetProductUseCase @Inject constructor(
     private val productsRepository: ProductsRepository,
     private val cartRepository: CartRepository
 ) {
-    fun execute(id: Int): Flow<ProductModel?> = flow {
+    fun execute(id: Int): Flow<Result<ProductModel?>> = flow {
         val products = productsRepository.getProducts()
         val cart = cartRepository.cart
 
@@ -25,9 +26,12 @@ class GetProductUseCase @Inject constructor(
             cart,
             products
         ) { _cart, _products ->
-            _products.find { it.id == id }
-                ?.toProductModel(_cart.find {it.id == id }?.count ?: 0)
-            }.collect {
+            when (_products) {
+                is Result.Error -> Result.failure(_products.message)
+                is Result.Success -> Result.success(_products.value.find { it.id == id }
+                    ?.toProductModel(_cart.find { it.id == id }?.count ?: 0))
+            }
+        }.collect {
             emit(it)
         }
     }

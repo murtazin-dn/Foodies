@@ -2,6 +2,7 @@ package com.example.data.di
 
 import com.example.data.repository.CategoriesRepository
 import com.example.data.repository.ProductsRepository
+import com.example.data.repository.TagsRepository
 import com.example.network.di.NetworkComponent
 import dagger.Component
 import dagger.Component.Builder
@@ -18,4 +19,5 @@ interface DataComponent {
     }
     val productsRepository: ProductsRepository
     val categoriesRepository: CategoriesRepository
+    val tagsRepository: TagsRepository
 }

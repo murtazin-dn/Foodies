@@ -1,9 +1,11 @@
 package com.example.foodies.di
 
+import com.example.cart.di.CartFeatureDependencies
 import com.example.catalog.di.CatalogFeatureDependencies
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductUseCase
+import com.example.domain.usecase.GetProductsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import com.example.productdetail.di.ProductDetailFeatureDependencies
 import dagger.Module
@@ -20,6 +22,21 @@ class AppModule {
     ): CatalogFeatureDependencies{
         return object : CatalogFeatureDependencies {
             override val getCatalogUseCase = getCatalogUseCase
+
+            override val addToCartUseCase = addToCartUseCase
+
+            override val removeFromCartUseCase = removeFromCartUseCase
+
+        }
+    }
+    @Singleton
+    fun provideCartFeatureDependencies(
+        getProductsUseCase: GetProductsUseCase,
+        addToCartUseCase: AddToCartUseCase,
+        removeFromCartUseCase: RemoveFromCartUseCase
+    ): CartFeatureDependencies {
+        return object : CartFeatureDependencies {
+            override val getProductsUseCase = getProductsUseCase
 
             override val addToCartUseCase = addToCartUseCase
 

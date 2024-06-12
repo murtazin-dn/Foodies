@@ -34,12 +34,35 @@ fun CatalogCartButton(
 }
 
 @Composable
+fun RetryButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+){
+    DefaultOrangeButton(modifier = modifier, onClick = onClick, text = stringResource(R.string.reload))
+}
+@Composable
+fun OrderButton(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    price: Long
+){
+    DefaultOrangeButton(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick,
+        text = stringResource(
+            R.string.order,
+            stringResource(R.string.price, price.formatNumberWithSpaces())
+        )
+    )
+}
+
+@Composable
 fun ProductDetailButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     price: Long
 ){
-    BaseOrangeButton(
+    DefaultOrangeButton(
         modifier = modifier.fillMaxWidth(),
         onClick = onClick,
         text = stringResource(
@@ -76,8 +99,9 @@ private fun BaseOrangeIconButton(
         )
     }
 }
+
 @Composable
-private fun BaseOrangeButton(
+fun DefaultOrangeButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     text: String
@@ -95,6 +119,26 @@ private fun BaseOrangeButton(
     }
 }
 
+@Preview
+@Composable
+private fun OrderButtonPreview() {
+    FoodiesTheme {
+        OrderButton(
+            onClick = {},
+            price = 1349
+        )
+    }
+}
+@Preview
+@Composable
+private fun ProductDetailButtonPreview() {
+    FoodiesTheme {
+        ProductDetailButton(
+            onClick = {},
+            price = 1349
+        )
+    }
+}
 @Preview
 @Composable
 private fun CatalogCartButtonPreview() {
@@ -119,7 +163,7 @@ private fun BaseOrangeIconButtonPreview() {
 @Composable
 private fun BaseOrangeButtonPreview() {
     FoodiesTheme {
-        BaseOrangeButton(
+        DefaultOrangeButton(
             onClick = {},
             text = "Button"
         )

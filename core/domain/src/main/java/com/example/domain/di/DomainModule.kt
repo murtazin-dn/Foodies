@@ -3,9 +3,11 @@ package com.example.domain.di
 import com.example.cart.repository.CartRepository
 import com.example.data.repository.CategoriesRepository
 import com.example.data.repository.ProductsRepository
+import com.example.data.repository.TagsRepository
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductUseCase
+import com.example.domain.usecase.GetProductsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import dagger.Module
 import dagger.Provides
@@ -17,10 +19,21 @@ internal class DomainModule {
     fun provideGetCatalogUseCase(
         productsRepository: ProductsRepository,
         categoriesRepository: CategoriesRepository,
-        cartRepository: CartRepository
+        cartRepository: CartRepository,
+        tagsRepository: TagsRepository
     ) = GetCatalogUseCase(
         productsRepository,
         categoriesRepository,
+        tagsRepository,
+        cartRepository,
+    )
+    @DomainScope
+    @Provides
+    fun provideGetProductsUseCase(
+        productsRepository: ProductsRepository,
+        cartRepository: CartRepository
+    ) = GetProductsUseCase(
+        productsRepository,
         cartRepository
     )
     @DomainScope

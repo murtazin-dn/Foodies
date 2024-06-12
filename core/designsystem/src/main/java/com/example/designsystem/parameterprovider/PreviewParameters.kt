@@ -31,7 +31,7 @@ object PreviewParameters{
         CategoryModel(id = 1512275, name = "Фестиваль гёдза"),
         CategoryModel(id = 1667058, name = "Мероприятия")
     )
-    private val tags = listOf(
+    val tags = listOf(
         TagModel(id = 1, name = "Новинка"),
         TagModel(id = 2, name = "Вегетарианское блюдо"),
         TagModel(id = 3, name = "Хит!"),
@@ -103,7 +103,7 @@ object PreviewParameters{
             proteinsPer100Grams = 10.0,
             fatsPer100Grams = 3.9,
             carbohydratesPer100Grams = 34.9,
-            tags = listOf(tags[3]),
+            tags = listOf(2),
             categoryId = 676168,
             countInCart = 2
         ),
@@ -120,7 +120,7 @@ object PreviewParameters{
             proteinsPer100Grams = 8.6,
             fatsPer100Grams = 8.4,
             carbohydratesPer100Grams = 46.9,
-            tags = listOf(tags[2]),
+            tags = listOf(3),
             categoryId = 676168,
             countInCart = 0
         ),
@@ -154,7 +154,7 @@ object PreviewParameters{
             proteinsPer100Grams = 10.1,
             fatsPer100Grams = 3.4,
             carbohydratesPer100Grams = 42.6,
-            tags = listOf(tags[2]),
+            tags = listOf(2),
             categoryId = 676168,
             countInCart = 8
         )
@@ -174,7 +174,7 @@ object PreviewParameters{
             proteinsPer100Grams = 10.1,
             fatsPer100Grams = 3.4,
             carbohydratesPer100Grams = 42.6,
-            tags = listOf(tags[2]),
+            tags = listOf(2),
             categoryId = 676168,
             countInCart = 8
         )
@@ -193,7 +193,7 @@ object PreviewParameters{
             proteinsPer100Grams = 10.1,
             fatsPer100Grams = 3.4,
             carbohydratesPer100Grams = 42.6,
-            tags = listOf(tags[1]),
+            tags = listOf(1),
             categoryId = 676168,
             countInCart = 0
         )
@@ -201,6 +201,7 @@ object PreviewParameters{
     val catalog = CatalogModel(
         categories = categories,
         products = products,
+        tags = tags,
         sum = 3453L
     )
 }

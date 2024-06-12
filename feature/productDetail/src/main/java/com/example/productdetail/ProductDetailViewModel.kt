@@ -2,6 +2,7 @@ package com.example.productdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.common.Result
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductUseCase
@@ -28,10 +29,17 @@ class ProductDetailViewModel @AssistedInject constructor(
 
     val state: StateFlow<ProductDetailUIState> = getProductUseCase.execute(id)
         .flatMapLatest { product ->
-            if (product == null) {
-                flowOf(ProductDetailUIState.Empty)
-            } else
-                flowOf(ProductDetailUIState.Success(product))
+            when(product){
+                is Result.Error ->  flowOf(ProductDetailUIState.Error(product.message))
+                is Result.Success -> {
+                    val productValue = product.value
+                    if (productValue == null) {
+                        flowOf(ProductDetailUIState.Empty)
+                    } else
+                        flowOf(ProductDetailUIState.Success(productValue))
+                }
+            }
+
         }
         .onStart { emit(ProductDetailUIState.Loading) }
         .stateIn(

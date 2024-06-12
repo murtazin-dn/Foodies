@@ -13,4 +13,15 @@
     <string name="fats">%1$s г</string>
     <string name="carbonhydarates">%1$s г</string>
     <string name="add_to_cart">В корзину за %1$s</string>
+    <string name="order">Заказать за %1$s</string>
+    <string name="cart">Корзина</string>
+    <string name="hint_search_product">Найти блюдо</string>
+    <string name="logo">Logo</string>
+    <string name="filter">Filter</string>
+    <string name="search">Search</string>
+    <string name="clear">Очистить</string>
+    <string name="title_filter">Подобрать блюда</string>
+    <string name="done">Готово</string>
+    <string name="reload">Обновить</string>
+    <string name="error">Ошибка</string>
 </resources>

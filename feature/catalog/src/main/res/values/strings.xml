@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="label_empty_filter">Таких блюд нет :(\nПопробуйте изменить фильтры</string>
+    <string name="label_empty_search">Ничего не нашлось :(</string>
+</resources>

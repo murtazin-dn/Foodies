@@ -25,11 +25,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.designsystem.R
 import com.example.designsystem.component.button.ProductDetailButton
-import com.example.designsystem.ext.customShadowTop
+import com.example.designsystem.component.shadow.softlayer.SoftLayerShadowContainer
+import com.example.designsystem.component.shadow.softlayer.softLayerShadow
 import com.example.designsystem.parameterprovider.ProductInCardPreviewParameterProvider
 import com.example.designsystem.theme.FoodiesTheme
 import com.example.model.ProductModel
@@ -39,7 +41,7 @@ fun ProductDetailContent(
     modifier: Modifier = Modifier,
     product: ProductModel,
     addToCart: () -> Unit
-){
+) {
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
@@ -62,19 +64,23 @@ fun ProductDetailContent(
             modifier = Modifier.padding(top = 24.dp, bottom = 21.dp),
             product = product
         )
-        Box(
-            modifier = Modifier
-                .customShadowTop(
+        SoftLayerShadowContainer {
+            Box(
+                modifier = Modifier.softLayerShadow(
                     color = Color.Black.copy(alpha = 0.1f),
-                    blurRadius = 16.dp,
-                    offsetY = 4.dp,
-                    spread = -5.dp
+                    radius = 16.dp,
+                    offset = DpOffset(y = -4.dp, x = 0.dp),
+                    spread = -5.dp,
+                    isAlphaContentClip = true
                 )
-        ){
-            ProductDetailButton(
-                modifier = Modifier.padding(vertical = 13.dp, horizontal = 16.dp),
-                onClick = addToCart,
-                price = product.priceCurrent)
+            )
+            {
+                ProductDetailButton(
+                    modifier = Modifier.padding(vertical = 13.dp, horizontal = 16.dp),
+                    onClick = addToCart,
+                    price = product.priceCurrent
+                )
+            }
         }
     }
 }
@@ -83,7 +89,7 @@ fun ProductDetailContent(
 private fun ProductDetailInfo(
     modifier: Modifier = Modifier,
     product: ProductModel
-){
+) {
     Column(modifier = modifier) {
         Text(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp),
@@ -98,15 +104,26 @@ private fun ProductDetailInfo(
         NutritionInfo(
             modifier = Modifier.padding(top = 24.dp),
             nutritionList = listOf(
-                Pair(stringResource(R.string.title_weight), "${product.measure} ${product.measureUnit}"),
-                Pair(stringResource(R.string.title_energy_value),
-                    stringResource(R.string.energy_value, product.energyPer100Grams)),
-                Pair(stringResource(R.string.title_protein),
-                    stringResource(R.string.protein, product.proteinsPer100Grams)),
-                Pair(stringResource(R.string.title_fats),
-                    stringResource(R.string.fats, product.fatsPer100Grams)),
-                Pair(stringResource(R.string.title_carbonhydraties),
-                    stringResource(R.string.carbonhydarates, product.carbohydratesPer100Grams)),
+                Pair(
+                    stringResource(R.string.title_weight),
+                    "${product.measure} ${product.measureUnit}"
+                ),
+                Pair(
+                    stringResource(R.string.title_energy_value),
+                    stringResource(R.string.energy_value, product.energyPer100Grams)
+                ),
+                Pair(
+                    stringResource(R.string.title_protein),
+                    stringResource(R.string.protein, product.proteinsPer100Grams)
+                ),
+                Pair(
+                    stringResource(R.string.title_fats),
+                    stringResource(R.string.fats, product.fatsPer100Grams)
+                ),
+                Pair(
+                    stringResource(R.string.title_carbonhydraties),
+                    stringResource(R.string.carbonhydarates, product.carbohydratesPer100Grams)
+                ),
             )
         )
     }
@@ -116,7 +133,7 @@ private fun ProductDetailInfo(
 private fun NutritionInfo(
     modifier: Modifier = Modifier,
     nutritionList: List<Pair<String, String>>
-){
+) {
     Column(modifier = modifier) {
         nutritionList.forEach { (label, value) ->
             Row(
@@ -157,9 +174,9 @@ private fun NutritionInfo(
 private fun ProductDetailContentPreview(
     @PreviewParameter(ProductInCardPreviewParameterProvider::class)
     product: ProductModel
-){
+) {
     FoodiesTheme {
-        Box(modifier = Modifier.fillMaxSize()){
+        Box(modifier = Modifier.fillMaxSize()) {
             ProductDetailContent(
                 product = product,
                 addToCart = {}

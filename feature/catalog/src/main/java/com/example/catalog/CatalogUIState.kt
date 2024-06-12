@@ -5,6 +5,8 @@ import com.example.model.CategoryModel
 
 sealed interface CatalogUIState {
     data object Loading: CatalogUIState
-    data class Error(val message: String): CatalogUIState
+    data object EmptySearch: CatalogUIState
+    data object EmptyFilter: CatalogUIState
+    data class Error(val message: String? = null): CatalogUIState
     data class Success(val data: CatalogModel): CatalogUIState
 }

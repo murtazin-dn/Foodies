@@ -16,12 +16,11 @@ data class Product(
     val proteinsPer100Grams: Double,
     val fatsPer100Grams: Double,
     val carbohydratesPer100Grams: Double,
-    val tags: List<Tag> = listOf(),
+    val tagIds: List<Int> = listOf(),
     val categoryId: Int
 ){
 }
-fun ProductDto.toProduct(tags: List<TagDto>): Product {
-    val tagList = tags.map { Tag(it.id, it.name) }
+fun ProductDto.toProduct(): Product {
     return Product(
         id = this.id,
         name = this.name,
@@ -35,9 +34,7 @@ fun ProductDto.toProduct(tags: List<TagDto>): Product {
         proteinsPer100Grams = this.proteinsPer100Grams,
         fatsPer100Grams = this.fatsPer100Grams,
         carbohydratesPer100Grams = this.carbohydratesPer100Grams,
-        tags = this.tagIds.mapNotNull { tagId ->
-            tagList.find { it.id == tagId }
-        },
+        tagIds = this.tagIds,
         categoryId = this.categoryId
     )
 }

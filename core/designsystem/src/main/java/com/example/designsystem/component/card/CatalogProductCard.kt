@@ -24,7 +24,7 @@ import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import com.example.designsystem.R
 import com.example.designsystem.component.button.CardPriceButton
-import com.example.designsystem.component.button.CounterButton
+import com.example.designsystem.component.button.CounterButtonCatalog
 import com.example.designsystem.parameterprovider.ProductInCardPreviewParameterProvider
 import com.example.designsystem.parameterprovider.ProductNotInCardPreviewParameterProvider
 import com.example.designsystem.theme.FoodiesTheme
@@ -38,7 +38,7 @@ fun CatalogProductCard(
     onRemoveFromCartClick: (Int) -> Unit
 ) {
     Box(modifier = modifier) {
-        val tagIcon = when (product.tags.firstOrNull()?.id) {
+        val tagIcon = when (product.tags.firstOrNull()) {
             1 -> R.drawable.ic_sale
             2 -> R.drawable.ic_vegan
             3 -> R.drawable.ic_sale
@@ -84,7 +84,7 @@ fun CatalogProductCard(
                     text = "${product.measure} ${product.measureUnit}"
                 )
                 if (product.countInCart > 0) {
-                    CounterButton(
+                    CounterButtonCatalog(
                         modifier = Modifier
                             .padding(top = 12.dp)
                             .fillMaxWidth(),

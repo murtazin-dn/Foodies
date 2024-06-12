@@ -42,6 +42,7 @@ android {
 dependencies {
     implementation(projects.feature.catalog)
     implementation(projects.feature.productDetail)
+    implementation(projects.feature.featureCart)
     implementation(libs.javax.inject)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.navigation.compose)

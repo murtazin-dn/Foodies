@@ -5,6 +5,7 @@ import com.example.data.di.DataComponent
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductUseCase
+import com.example.domain.usecase.GetProductsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import com.example.network.di.NetworkComponent
 import dagger.Component
@@ -20,6 +21,7 @@ interface DomainComponent {
     }
     val getCatalogUseCase: GetCatalogUseCase
     val getProductUseCase: GetProductUseCase
+    val getProductsUseCase: GetProductsUseCase
     val addToCartUseCase: AddToCartUseCase
     val removeFromCartUseCase: RemoveFromCartUseCase
 }
