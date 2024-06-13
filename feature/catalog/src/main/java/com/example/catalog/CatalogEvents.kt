@@ -7,4 +7,5 @@ sealed interface CatalogEvents {
     data class Filter(val filter: List<FilterModel>): CatalogEvents
     data class AddToCart(val id: Int): CatalogEvents
     data class RemoveFromCartCart(val id: Int): CatalogEvents
+    data object Reload: CatalogEvents
 }

@@ -2,4 +2,5 @@
 <resources>
     <string name="label_empty_filter">Таких блюд нет :(\nПопробуйте изменить фильтры</string>
     <string name="label_empty_search">Ничего не нашлось :(</string>
+    <string name="label_empty_search_value">Введите название блюда,\nкоторое ищете</string>
 </resources>

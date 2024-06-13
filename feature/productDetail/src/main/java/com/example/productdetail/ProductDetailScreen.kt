@@ -32,7 +32,7 @@ import com.example.model.ProductModel
 internal fun ProductDetailRoute(
     viewModel: ProductDetailViewModel,
     onBack: () -> Unit
-){
+) {
     val state by viewModel.state.collectAsState()
     ProductDetailScreen(
         state = state,
@@ -48,7 +48,7 @@ internal fun ProductDetailScreen(
     reload: () -> Unit,
     addToCart: () -> Unit,
     onBack: () -> Unit
-){
+) {
     FoodiesTheme {
         Box(
             modifier = Modifier
@@ -77,23 +77,23 @@ internal fun ProductDetailScreen(
 internal fun ProductDetailSuccessScreen(
     state: ProductDetailUIState.Success,
     addToCart: () -> Unit
-){
+) {
     val product = state.product
-        ProductDetailContent(
-            product = product,
-            addToCart = addToCart
-        )
+    ProductDetailContent(
+        product = product,
+        addToCart = addToCart
+    )
 }
 
 @Composable
 internal fun ProductDetailEmptyScreen(
     retry: () -> Unit
-){
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-    ){
+    ) {
         ReloadCard(
             onReload = retry,
             text = stringResource(id = R.string.title_not_found)
@@ -104,22 +104,23 @@ internal fun ProductDetailEmptyScreen(
 @Composable
 internal fun ProductDetailErrorScreen(
     retry: () -> Unit
-){
+) {
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-    ){
+    ) {
         ReloadCard(
+            modifier = Modifier.align(Alignment.Center),
             onReload = retry
         )
     }
 }
 
 @Composable
-internal fun ProductDetailLoadingScreen(){
-    Box(modifier = Modifier.fillMaxSize()){
+internal fun ProductDetailLoadingScreen() {
+    Box(modifier = Modifier.fillMaxSize()) {
         CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
     }
 }
@@ -129,7 +130,7 @@ internal fun ProductDetailLoadingScreen(){
 private fun ProductDetailSuccessScreenPreview(
     @PreviewParameter(ProductInCardPreviewParameterProvider::class)
     product: ProductModel
-){
+) {
     ProductDetailSuccessScreen(
         state = ProductDetailUIState.Success(product),
         addToCart = {}

@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -103,8 +104,7 @@ private fun BaseCounter(
                             .size(24.dp)
                             .align(Alignment.Center),
                         painter = painterResource(id = R.drawable.ic_plus),
-                        //TODO use string resource
-                        contentDescription = "Add",
+                        contentDescription = stringResource(R.string.description_add),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }
@@ -132,8 +132,7 @@ private fun BaseCounter(
                             .size(24.dp)
                             .align(Alignment.Center),
                         painter = painterResource(id = R.drawable.ic_minus),
-                        //TODO use string resource
-                        contentDescription = "Remove",
+                        contentDescription = stringResource(R.string.description_remove),
                         tint = MaterialTheme.colorScheme.primary
                     )
                 }

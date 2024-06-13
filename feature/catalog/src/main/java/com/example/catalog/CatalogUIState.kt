@@ -5,8 +5,13 @@ import com.example.model.CategoryModel
 
 sealed interface CatalogUIState {
     data object Loading: CatalogUIState
-    data object EmptySearch: CatalogUIState
-    data object EmptyFilter: CatalogUIState
     data class Error(val message: String? = null): CatalogUIState
-    data class Success(val data: CatalogModel): CatalogUIState
+    sealed class Success: CatalogUIState {
+        abstract val data: CatalogModel
+        data class Data(override val data: CatalogModel): Success()
+        data class EmptySearch(override val data: CatalogModel) : Success()
+        data class EmptySearchValue(override val data: CatalogModel) : Success()
+        data class EmptyFilter(override val data: CatalogModel) : Success()
+    }
+
 }

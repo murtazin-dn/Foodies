@@ -2,10 +2,12 @@ package com.example.cart
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.common.Result
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductsUseCase
+import com.example.domain.usecase.ReloadProductsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import com.example.model.CatalogModel
 import com.example.model.ProductsModel
@@ -21,7 +23,8 @@ import javax.inject.Inject
 internal class CartViewModel @Inject constructor(
     private val getProductsUseCase: GetProductsUseCase,
     private val addToCartUseCase: AddToCartUseCase,
-    private val removeFromCartUseCase: RemoveFromCartUseCase
+    private val removeFromCartUseCase: RemoveFromCartUseCase,
+    private val reloadProductsUseCase: ReloadProductsUseCase
 ) : ViewModel() {
 
     val state: StateFlow<CartUIState> = getProductsUseCase.execute()
@@ -52,6 +55,10 @@ internal class CartViewModel @Inject constructor(
 
     fun removeFromCart(id: Int) {
         viewModelScope.launch { removeFromCartUseCase.execute(id) }
+    }
+
+    fun reload() {
+        viewModelScope.launch { reloadProductsUseCase.execute() }
     }
 
 }

@@ -88,8 +88,7 @@ private fun BaseOrangeIconButton(
     ){
         Icon(
             painter = painterResource(id = R.drawable.ic_cart),
-            //TODO string resource
-            contentDescription = "cart button",
+            contentDescription = stringResource(R.string.description_cart_button),
             tint = Color.White
         )
         Spacer(modifier = Modifier.width(8.dp))

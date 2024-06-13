@@ -8,6 +8,9 @@ import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductUseCase
 import com.example.domain.usecase.GetProductsUseCase
+import com.example.domain.usecase.ReloadCategoriesUseCase
+import com.example.domain.usecase.ReloadProductsUseCase
+import com.example.domain.usecase.ReloadTagsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import dagger.Module
 import dagger.Provides
@@ -58,5 +61,27 @@ internal class DomainModule {
         cartRepository: CartRepository
     ) = RemoveFromCartUseCase(
         cartRepository
+    )
+
+    @DomainScope
+    @Provides
+    fun provideReloadProductsUseCase(
+        productsRepository: ProductsRepository
+    ) = ReloadProductsUseCase(
+        productsRepository
+    )
+    @DomainScope
+    @Provides
+    fun provideReloadTagsUseCase(
+        tagsRepository: TagsRepository
+    ) = ReloadTagsUseCase(
+        tagsRepository
+    )
+    @DomainScope
+    @Provides
+    fun provideReloadCategoriesUseCase(
+        categoriesRepository: CategoriesRepository
+    ) = ReloadCategoriesUseCase(
+        categoriesRepository
     )
 }

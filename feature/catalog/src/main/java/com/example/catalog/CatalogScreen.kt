@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.DpOffset
@@ -78,7 +79,8 @@ internal fun CatalogRoute(
             navigateToProductDetail = navigateToProductDetail,
             navigateToCart = navigateToCart,
             onSearch = { viewModel.obtainEvent(CatalogEvents.Search(it)) },
-            onFilter = { viewModel.obtainEvent(CatalogEvents.Filter(it)) }
+            onFilter = { viewModel.obtainEvent(CatalogEvents.Filter(it)) },
+            retry = {viewModel.obtainEvent(CatalogEvents.Reload)}
         )
     }
 }
@@ -93,10 +95,11 @@ internal fun CatalogScreen(
     navigateToProductDetail: (Int) -> Unit,
     navigateToCart: () -> Unit,
     onSearch: (String?) -> Unit,
-    onFilter: (List<FilterModel>) -> Unit
+    onFilter: (List<FilterModel>) -> Unit,
+    retry: () -> Unit
 ) {
     when (state) {
-        is CatalogUIState.Error -> CatalogError(retry = {})
+        is CatalogUIState.Error -> CatalogError(retry = retry)
         CatalogUIState.Loading -> CatalogLoading()
         is CatalogUIState.Success -> CatalogLoadedData(
             state = state,
@@ -109,11 +112,25 @@ internal fun CatalogScreen(
             onSearch = onSearch,
             onFilter = onFilter
         )
-        CatalogUIState.EmptyFilter -> CatalogEmptyFilter()
-        CatalogUIState.EmptySearch -> CatalogEmptySearch()
     }
 }
 
+@Composable
+internal fun CatalogEmptySearchValue(){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        Text(
+            modifier = Modifier
+                .align(Alignment.Center),
+            style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
+            text = stringResource(R.string.label_empty_search_value),
+            textAlign = TextAlign.Center
+        )
+    }
+}
 @Composable
 internal fun CatalogEmptySearch(){
     Box(
@@ -125,7 +142,8 @@ internal fun CatalogEmptySearch(){
             modifier = Modifier
                 .align(Alignment.Center),
             style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
-            text = stringResource(R.string.label_empty_search)
+            text = stringResource(R.string.label_empty_search),
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -140,7 +158,8 @@ internal fun CatalogEmptyFilter(){
             modifier = Modifier
                 .align(Alignment.Center),
             style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
-            text = stringResource(R.string.label_empty_filter)
+            text = stringResource(R.string.label_empty_filter),
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -157,7 +176,10 @@ internal fun CatalogError(
     retry: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        ReloadCard(onReload = retry)
+        ReloadCard(
+            modifier = Modifier.align(Alignment.Center),
+            onReload = retry
+        )
     }
 }
 
@@ -235,34 +257,47 @@ internal fun CatalogLoadedData(
                     )
                 }
             }
-            ListItems(
-                modifier = Modifier.weight(1f),
-                state = listState,
-                catalogItems = catalog.products,
-                onAddToCartClick = onAddToCartClick,
-                onRemoveFromCartClick = onRemoveFromCartClick,
-                navigateToProductDetail = navigateToProductDetail
-            )
-            if (catalog.sum > 0) {
-                SoftLayerShadowContainer {
-                    Box(
-                        modifier = Modifier
-                            .background(Color.White)
-                            .fillMaxWidth()
-                            .softLayerShadow(
-                                color = Color.Black.copy(alpha = 0.1f),
-                                radius = 16.dp,
-                                offset = DpOffset(y = (-4).dp, x = 0.dp),
-                                spread = (-5).dp,
-                                isAlphaContentClip = true
-                            )
-                    ) {
-                        CatalogCartButton(
-                            modifier = Modifier.padding(12.dp),
-                            onClick = navigateToCart,
-                            price = catalog.sum
+            Column(
+                modifier = Modifier
+                    .background(Color.White)
+            ) {
+                when(state){
+                    is CatalogUIState.Success.Data -> {
+                        ListItems(
+                            modifier = Modifier.weight(1f),
+                            state = listState,
+                            catalogItems = catalog.products,
+                            onAddToCartClick = onAddToCartClick,
+                            onRemoveFromCartClick = onRemoveFromCartClick,
+                            navigateToProductDetail = navigateToProductDetail
                         )
+                        if (catalog.sum > 0) {
+                            SoftLayerShadowContainer {
+                                Box(
+                                    modifier = Modifier
+                                        .background(Color.White)
+                                        .fillMaxWidth()
+                                        .softLayerShadow(
+                                            color = Color.Black.copy(alpha = 0.1f),
+                                            radius = 16.dp,
+                                            offset = DpOffset(y = (-4).dp, x = 0.dp),
+                                            spread = (-5).dp,
+                                            isAlphaContentClip = true
+                                        )
+                                ) {
+                                    CatalogCartButton(
+                                        modifier = Modifier.padding(12.dp),
+                                        onClick = navigateToCart,
+                                        price = catalog.sum
+                                    )
+                                }
+                            }
+
+                        }
                     }
+                    is CatalogUIState.Success.EmptyFilter -> CatalogEmptyFilter()
+                    is CatalogUIState.Success.EmptySearch -> CatalogEmptySearch()
+                    is CatalogUIState.Success.EmptySearchValue -> CatalogEmptySearchValue()
                 }
 
             }
@@ -334,7 +369,7 @@ private fun CatalogLoadedDataPreview(
 
     FoodiesTheme {
         CatalogLoadedData(
-            state = CatalogUIState.Success(
+            state = CatalogUIState.Success.Data(
                 data = catalog
             ),
             searchState = null,

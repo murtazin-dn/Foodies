@@ -22,11 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.designsystem.component.button.OrderButton
 import com.example.designsystem.component.card.CartProductCard
+import com.example.designsystem.component.card.ReloadCard
 import com.example.designsystem.component.shadow.softlayer.SoftLayerShadowContainer
 import com.example.designsystem.component.shadow.softlayer.softLayerShadow
 import com.example.designsystem.component.topbar.CartTopBar
@@ -47,7 +49,8 @@ internal fun CartRoute(
             state = state,
             onBack = onBack,
             addToCart = viewModel::addToCart,
-            removeFromCart = viewModel::removeFromCart
+            removeFromCart = viewModel::removeFromCart,
+            retry = viewModel::reload
         )
     }
 }
@@ -57,6 +60,7 @@ internal fun CartRoute(
 internal fun CartScreen(
     state: CartUIState,
     onBack: () -> Unit,
+    retry: () -> Unit,
     addToCart: (Int) -> Unit,
     removeFromCart: (Int) -> Unit
 ) {
@@ -86,7 +90,7 @@ internal fun CartScreen(
 
         when (state) {
             CartUIState.Empty -> CartEmptyScreen()
-            is CartUIState.Error -> CartErrorScreen()
+            is CartUIState.Error -> CartErrorScreen(retry)
             CartUIState.Loading -> CartLoadingScreen()
             is CartUIState.Success -> CartSuccessScreen(
                 state.cart,
@@ -137,7 +141,7 @@ private fun CartSuccessScreen(
                     modifier = Modifier
                         .padding(16.dp)
                         .align(Alignment.Center),
-                    onClick = { TODO() },
+                    onClick = { },
                     price = cart.sum
                 )
             }
@@ -158,15 +162,26 @@ private fun CartEmptyScreen() {
             modifier = Modifier
                 .align(Alignment.Center),
             style = MaterialTheme.typography.bodyLarge.copy(color = Color.Gray),
-            text = stringResource(R.string.label_cart_empty)
+            text = stringResource(R.string.label_cart_empty),
+            textAlign = TextAlign.Center
         )
     }
 }
 
 @Composable
-private fun CartErrorScreen() {
-    TODO()
-
+private fun CartErrorScreen(
+    retry: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+    ) {
+        ReloadCard(
+            modifier = Modifier.align(Alignment.Center),
+            onReload = retry
+        )
+    }
 }
 
 @Composable

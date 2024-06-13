@@ -9,6 +9,9 @@ import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductUseCase
 import com.example.domain.usecase.GetProductsUseCase
+import com.example.domain.usecase.ReloadCategoriesUseCase
+import com.example.domain.usecase.ReloadProductsUseCase
+import com.example.domain.usecase.ReloadTagsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import com.example.network.di.NetworkComponent
 import com.example.productdetail.di.ProductDetailFeatureDependencies
@@ -27,6 +30,9 @@ interface AppComponent
     override val getCatalogUseCase: GetCatalogUseCase
     override val addToCartUseCase: AddToCartUseCase
     override val removeFromCartUseCase: RemoveFromCartUseCase
+    override val reloadProductsUseCase: ReloadProductsUseCase
+    override val reloadTagsUseCase: ReloadTagsUseCase
+    override val reloadCategoriesUseCase: ReloadCategoriesUseCase
 
     @Component.Builder
     interface Builder{

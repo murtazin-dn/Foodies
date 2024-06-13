@@ -6,6 +6,7 @@ import com.example.common.Result
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
 import com.example.domain.usecase.GetProductUseCase
+import com.example.domain.usecase.ReloadProductsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import com.example.model.CatalogModel
 import com.example.model.ProductModel
@@ -25,6 +26,7 @@ class ProductDetailViewModel @AssistedInject constructor(
     @Assisted private val id: Int,
     private val getProductUseCase: GetProductUseCase,
     private val addToCartUseCase: AddToCartUseCase,
+    private val reloadProductsUseCase: ReloadProductsUseCase
 ) : ViewModel() {
 
     val state: StateFlow<ProductDetailUIState> = getProductUseCase.execute(id)
@@ -52,7 +54,7 @@ class ProductDetailViewModel @AssistedInject constructor(
         viewModelScope.launch { addToCartUseCase.execute(id) }
     }
     fun reload() {
-        viewModelScope.launch {  }
+        viewModelScope.launch { reloadProductsUseCase.execute() }
     }
 
     @AssistedFactory

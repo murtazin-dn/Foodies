@@ -6,11 +6,15 @@ import com.example.common.Result
 import com.example.designsystem.state.EventHandler
 import com.example.domain.usecase.AddToCartUseCase
 import com.example.domain.usecase.GetCatalogUseCase
+import com.example.domain.usecase.ReloadCategoriesUseCase
+import com.example.domain.usecase.ReloadProductsUseCase
+import com.example.domain.usecase.ReloadTagsUseCase
 import com.example.domain.usecase.RemoveFromCartUseCase
 import com.example.model.CatalogModel
 import com.example.model.CategoryModel
 import com.example.model.FilterModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,7 +30,10 @@ import javax.inject.Inject
 internal class CatalogViewModel @Inject constructor(
     private val getCatalogUseCase: GetCatalogUseCase,
     private val addToCartUseCase: AddToCartUseCase,
-    private val removeFromCartUseCase: RemoveFromCartUseCase
+    private val removeFromCartUseCase: RemoveFromCartUseCase,
+    private val reloadProductsUseCase: ReloadProductsUseCase,
+    private val reloadCategoriesUseCase: ReloadCategoriesUseCase,
+    private val reloadTagsUseCase: ReloadTagsUseCase
 ) : ViewModel(), EventHandler<CatalogEvents> {
 
     val searchState = MutableStateFlow<String?>(null)
@@ -49,30 +56,34 @@ internal class CatalogViewModel @Inject constructor(
                             products = _catalog.value.products.filter {
                                 it.name.contains(_search, true)
                             })
-                        return@combine if (searchedCatalog.products.isEmpty()){
-                            CatalogUIState.EmptySearch
-                        } else CatalogUIState.Success(searchedCatalog)
+                        return@combine if (searchedCatalog.products.isEmpty()) {
+                            CatalogUIState.Success.EmptySearch(searchedCatalog)
+                        } else if (_search == "") {
+                            CatalogUIState.Success.EmptySearchValue(searchedCatalog)
+                        } else {
+                            CatalogUIState.Success.Data(searchedCatalog)
+                        }
                     }
 
-                        if (_filter.isEmpty()) {
-                            filterState.value = _catalog.value.tags.map { tag ->
-                                FilterModel(id = tag.id, name = tag.name)
-                            }
-                            CatalogUIState.Success(_catalog.value)
+                    if (_filter.isEmpty()) {
+                        filterState.value = _catalog.value.tags.map { tag ->
+                            FilterModel(id = tag.id, name = tag.name)
+                        }
+                        CatalogUIState.Success.Data(_catalog.value)
+                    } else {
+                        if (filterIds.isEmpty()) {
+                            CatalogUIState.Success.Data(_catalog.value)
                         } else {
-                            if (filterIds.isEmpty()) {
-                                CatalogUIState.Success(_catalog.value)
-                            } else {
-                                val filteredCatalog = _catalog.value.copy(
-                                    products = _catalog.value.products.filter { product ->
+                            val filteredCatalog = _catalog.value.copy(
+                                products = _catalog.value.products.filter { product ->
                                     product.tags.any { it in filterIds }
                                 })
-                                if (filteredCatalog.products.isEmpty()){
-                                    CatalogUIState.EmptyFilter
-                                }else CatalogUIState.Success(filteredCatalog)
-                            }
+                            if (filteredCatalog.products.isEmpty()) {
+                                CatalogUIState.Success.EmptyFilter(filteredCatalog)
+                            } else CatalogUIState.Success.Data(filteredCatalog)
                         }
-                    
+                    }
+
                 }
             }
         }
@@ -99,12 +110,19 @@ internal class CatalogViewModel @Inject constructor(
         filterState.value = filterValue
     }
 
+    private fun reload(){
+        viewModelScope.launch { reloadProductsUseCase.execute() }
+        viewModelScope.launch { reloadTagsUseCase.execute() }
+        viewModelScope.launch { reloadCategoriesUseCase.execute() }
+    }
+
     override fun obtainEvent(event: CatalogEvents) {
         when (event) {
             is CatalogEvents.AddToCart -> addToCart(event.id)
             is CatalogEvents.RemoveFromCartCart -> removeFromCart(event.id)
             is CatalogEvents.Filter -> filter(event.filter)
             is CatalogEvents.Search -> search(event.value)
+            CatalogEvents.Reload -> reload()
         }
     }
 
